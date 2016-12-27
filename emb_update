@@ -1,0 +1,25 @@
+#!/bin/sh
+case "$1" in
+	version)
+		echo "%APPVER%"
+		;;
+	*)
+	   # refuse to update if the md5 fails
+	   if ! echo "%MD5%" |md5sum -c; then
+	      echo "MD5 failed"
+	      exit 1
+	   fi
+		mount -r rootfs.ext2 /mnt
+		cd /mnt
+		usr/bin/kobs-ng boot/imx28_ivt_linux.sb
+		mount boot/rootfs.ext2 mnt
+		for i in `ls -1r /etc/init.d/S??*` ;do $i stop; done
+		killall syslogd klogd
+		# copy everything
+		cp -R /mnt/mnt/* /
+		reboot
+		;;
+esac
+
+exit 0
+
