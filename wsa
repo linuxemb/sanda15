@@ -1,0 +1,12 @@
+#/checkkey
+#if got right key, $?==0
+#,if ./checkkey
+if ./server
+then
+echo "Correct key received, enable ATE"
+#chmod ug+x ./ATE
+chmod 755 ATE
+#fi
+echo " Launch ATE "
+./ATE
+fi
